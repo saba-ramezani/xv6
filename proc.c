@@ -551,11 +551,4 @@ getProcessCount(void)
 }
 
 
-int readCount = 0;
 
-
-int 
-getReadCount(void)
-{
-  return readCount;
-}

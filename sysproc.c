@@ -98,8 +98,11 @@ sys_getProcessCount(void)
 }
 
 
+int readCount = 0;
+
+
 int 
 sys_getReadCount(void)
 {
-  return getReadCount();
+  return readCount;
 }
