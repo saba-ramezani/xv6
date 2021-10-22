@@ -549,3 +549,13 @@ getProcessCount(void)
   release(&ptable.lock);
   return processCount;
 }
+
+
+int readCount = 0;
+
+
+int 
+getReadCount(void)
+{
+  return readCount;
+}

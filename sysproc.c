@@ -96,3 +96,10 @@ sys_getProcessCount(void)
 {
   return getProcessCount();
 }
+
+
+int 
+sys_getReadCount(void)
+{
+  return getReadCount();
+}
