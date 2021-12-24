@@ -109,7 +109,7 @@ sys_getReadCount(void)
 
 
 int 
-sys_threadCreate(void)
+sys_thread_create(void)
 {
   int status;
   char* stack;
@@ -120,7 +120,7 @@ sys_threadCreate(void)
 
 
 int
-sys_threadWait(void)
+sys_thread_wait(void)
 {
   return thread_wait();
 }

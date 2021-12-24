@@ -180,6 +180,48 @@ growproc(int n)
     }
   }
   curproc->sz = sz;
+  acquire(&ptable.lock);
+  struct proc *p;
+  int numberOfChildren;
+  if(curproc->threads == -1)
+  {
+    curproc->parent->sz = curproc->sz;
+    numberOfChildren = curproc->parent->threads - 2;
+    if(numberOfChildren <= 0){
+      release(&ptable.lock);
+      release(&thread);
+      switchuvm(curproc);
+      return 0;
+    }
+
+    else 
+    {
+      for(p = ptable.proc ; p < &ptable.proc[NPROC] ; p++) {
+        if(p != curproc && p->parent == curproc->parent && p->threads == -1) {
+          p->sz = curproc->sz;
+          numberOfChildren--;
+        }
+      }
+    }
+  } else {
+    numberOfChildren = curproc->threads - 1;
+    if(numberOfChildren <= 0){
+      release(&ptable.lock);
+      release(&thread);
+      switchuvm(curproc);
+      return 0;
+    } else {
+      for (p = ptable.proc ; p < &ptable.proc[NPROC] ; p++) {
+        if (p->parent == curproc && p->threads == -1) {
+          p->sz = curproc->sz;
+          numberOfChildren--;
+        }
+      }
+    }
+  }
+
+  release(&ptable.lock);
+  release(&thread);
   switchuvm(curproc);
   return 0;
 }
@@ -219,6 +261,8 @@ fork(void)
     return -1;
   }
   np->sz = curproc->sz;
+  np->stackTop = curproc->stackTop;
+  np->threads = 1;
   np->parent = curproc;
   *np->tf = *curproc->tf;
 
